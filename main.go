@@ -7,7 +7,7 @@ import (
 	"os/signal"
 	"path/filepath"
 
-	"github.com/robfig/cron"
+	"github.com/rochacon/docker-cron/Godeps/_workspace/src/github.com/robfig/cron"
 )
 
 // DOCKER_HOST points to the Docker daemon socket

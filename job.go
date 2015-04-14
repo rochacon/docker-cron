@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/fsouza/go-dockerclient"
+	"github.com/rochacon/docker-cron/Godeps/_workspace/src/github.com/fsouza/go-dockerclient"
 )
 
 // Job is the definition of a CRON job
