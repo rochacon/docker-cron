@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"time"
 
 	"github.com/rochacon/docker-cron/Godeps/_workspace/src/github.com/fsouza/go-dockerclient"
 )
@@ -34,6 +35,8 @@ func FromFile(filename string) (*Job, error) {
 
 // Run executes a Job
 func (j *Job) Run() {
+	started := time.Now()
+
 	dcli, err := docker.NewClient(DOCKER_HOST)
 	if err != nil {
 		log.Printf("[%s] Error connecting to Docker instance: %q\n", j.Id, err)
@@ -57,5 +60,6 @@ func (j *Job) Run() {
 		log.Printf("[%s] Error waiting container execution: %q\n", j.Id, err)
 		return
 	}
-	log.Printf("[%s] Job finished.\n", j.Id)
+
+	log.Printf("[%s] Job finished in %s.\n", j.Id, time.Since(started))
 }
