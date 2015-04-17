@@ -24,7 +24,7 @@ func main() {
 	}
 
 	// Get jobs descriptions filenames
-	jobs, err := filepath.Glob(fmt.Sprintf("%s/*", *jobsDir))
+	jobs, err := filepath.Glob(fmt.Sprintf("%s/*.json", *jobsDir))
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
