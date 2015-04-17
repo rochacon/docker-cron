@@ -49,10 +49,11 @@ func (j *Job) Run() {
 		return
 	}
 
-	if _, err := dcli.WaitContainer(c.ID); err != nil {
+	status, err := dcli.WaitContainer(c.ID)
+	if err != nil {
 		log.Printf("[%s] Error waiting container execution: %q\n", j.Id, err)
 		return
 	}
 
-	log.Printf("[%s] Job finished in %s.\n", j.Id, time.Since(started))
+	log.Printf("[%s] Job finished with status %d in %s.\n", j.Id, status, time.Since(started))
 }
