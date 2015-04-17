@@ -1,0 +1,12 @@
+{
+    "Id": "docker-hello-world-cron-id",
+    "Interval": "*/10 * * * * *",
+    "Name": "docker-hello-world",
+    "Container": {
+        "Cmd": ["echo", "$DISCLAIMER"],
+        "Image": "busybox",
+        "Env": [
+            "DISCLAIMER=Hello World"
+        ]
+    }
+}
