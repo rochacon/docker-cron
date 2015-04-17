@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"io"
 	"log"
-	"os"
 	"time"
 
 	"github.com/rochacon/docker-cron/Godeps/_workspace/src/github.com/fsouza/go-dockerclient"
@@ -17,19 +17,12 @@ type Job struct {
 	Container docker.Config
 }
 
-// FromFile returns a Job instance parsed from a JSON file
-func FromFile(filename string) (*Job, error) {
+// NewJob returns a Job instance parsed from a JSON reader
+func NewJob(r io.Reader) (*Job, error) {
 	j := &Job{}
-
-	fp, err := os.Open(filename)
-	if err != nil {
+	if err := json.NewDecoder(r).Decode(&j); err != nil {
 		return j, err
 	}
-
-	if err := json.NewDecoder(fp).Decode(&j); err != nil {
-		return j, err
-	}
-
 	return j, nil
 }
 

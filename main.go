@@ -32,19 +32,7 @@ func main() {
 
 	// Setup cron
 	cr := cron.New()
-	for _, filename := range jobs {
-		j, err := FromFile(filename)
-		if err != nil {
-			fmt.Printf("Error parsing job from %q: %q\n", filename, err)
-			os.Exit(2)
-		}
-		fmt.Printf("Registering job %q for %q\n", j.Id, j.Interval)
-		err = cr.AddJob(j.Interval, j)
-		if err != nil {
-			fmt.Printf("Error registering job %q: %q\n", j.Id, err)
-			os.Exit(2)
-		}
-	}
+	registerJobs(cr, jobs)
 	cr.Start()
 
 	// Wait SIGINT or SIGKILL to quit app
@@ -54,4 +42,27 @@ func main() {
 	<-exit
 	cr.Stop()
 	// TODO clean running jobs.
+}
+
+// registerJobs load jobs from disk
+func registerJobs(cr *cron.Cron, jobs []string) {
+	for _, filename := range jobs {
+		fp, err := os.Open(filename)
+		if err != nil {
+			fmt.Printf("Error opening job %q: %q\n", filename, err)
+			os.Exit(4)
+		}
+		defer fp.Close()
+		j, err := NewJob(fp)
+		if err != nil {
+			fmt.Printf("Error parsing job from %q: %q\n", filename, err)
+			os.Exit(2)
+		}
+		fmt.Printf("Registering job %q for %q\n", j.Id, j.Interval)
+		err = cr.AddJob(j.Interval, j)
+		if err != nil {
+			fmt.Printf("Error registering job %q: %q\n", j.Id, err)
+			os.Exit(3)
+		}
+	}
 }
