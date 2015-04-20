@@ -1,7 +1,6 @@
 # Docker CRON
 
-`docker-cron` is a Docker base image that schedules containers in a time interval bases.
-
+`docker-cron` is a cron service for Docker containers.
 
 # Building your cron image
 
